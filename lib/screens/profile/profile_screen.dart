@@ -56,6 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               height: 300,
               alignment: Alignment.center,
               child: Column(
@@ -73,7 +74,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       thickness: 1,
                     ),
                   ),
-                  
+                  const Text(
+                    'Application developed by tuantoquq & annd \n 1-2022.',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
             ),

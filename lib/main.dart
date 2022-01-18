@@ -5,6 +5,7 @@ import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/provider/auth.dart';
 import 'package:belo_app/provider/chats.dart';
 import 'package:belo_app/provider/friends.dart';
+import 'package:belo_app/provider/user.dart';
 import 'package:belo_app/screens/auth/auth_screen.dart';
 import 'package:belo_app/screens/auth/welcome_screen.dart';
 import 'package:belo_app/utils/utils.dart';
@@ -37,19 +38,29 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (ctx) => Auth()),
         ChangeNotifierProvider(create: (ctx) => Chats()),
         ChangeNotifierProvider(create: (ctx) => Friends()),
+        ChangeNotifierProvider(create: (ctx) => User()),
       ],
-      child: MaterialApp(
-        title: 'Belo Social',
-        theme: ThemeData(
-          primaryColor: MyTheme.kPrimaryColor,
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+      child: Consumer<Auth>(
+        builder: (context, auth, _) => MaterialApp(
+          title: 'Belo Social',
+          theme: ThemeData(
+              primaryColor: MyTheme.kPrimaryColor,
+              textTheme:
+                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
+          home: auth.isAuth
+              ? const Home()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? const Center(child: CircularProgressIndicator())
+                          : const WelcomeScreen()),
+          routes: {
+            WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
+            Home.routeName: (ctx) => const Home(),
+            AuthScreen.routeName: (ctx) => const AuthScreen()
+          },
         ),
-        home: const WelcomeScreen(),
-        routes: {
-          WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
-          Home.routeName: (ctx) => const Home(),
-          AuthScreen.routeName: (ctx) => const AuthScreen()
-        },
       ),
     );
   }

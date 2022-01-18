@@ -43,6 +43,23 @@ class Util {
     );
   }
 
+  static void showNotification(String message, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Notification!'),
+        content: Text(message),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'))
+        ],
+      ),
+    );
+  }
+
   static Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = json.decode(prefs.getString("userData")!)["token"];

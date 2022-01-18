@@ -1,3 +1,4 @@
+import 'package:belo_app/my_theme.dart';
 import 'package:flutter/material.dart';
 
 class ConversationInfoScreen extends StatefulWidget {
@@ -26,7 +27,13 @@ class _ConversationInfoScreenState extends State<ConversationInfoScreen> {
               ),
             )
         ),
-        body: Container(),
+        body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        alignment: Alignment.center,
+          child: Text(
+        'This screen is still under development, come back later!',
+        style: TextStyle(color: MyTheme.kPrimaryColor),
+      )),
     );
   }
 }

@@ -246,4 +246,51 @@ class Api {
       rethrow;
     }
   }
+
+  static Future<dynamic> searchUser(
+      String token, String query) async {
+    final url = Uri.parse('$domain/users/search');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'},
+        body: jsonEncode({"keyword": query})
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException('Something went wrong!');
+      }
+      final decodedResponse = json.decode(utf8.decode(response.bodyBytes));
+
+      return decodedResponse;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  static Future<dynamic> sendRequestFriend(
+      String token, String userId) async {
+    final url = Uri.parse('$domain/friends/set-request-friend');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'},
+        body: jsonEncode({"user_id": userId})
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException('Something went wrong!');
+      }
+      final decodedResponse = json.decode(utf8.decode(response.bodyBytes));
+
+      return decodedResponse;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
 }

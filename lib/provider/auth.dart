@@ -40,6 +40,20 @@ class Auth with ChangeNotifier {
     Api.signUp(phonenumber, password, username);
   }
 
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return false;
+    }
+
+    final extractedUserData = json.decode(prefs.getString('userData')!);
+    _token = extractedUserData['token'].toString();
+
+    notifyListeners();
+    logout();
+    return true;
+  }
+
   Future<void> logout() async {
     _token = null;
     notifyListeners();

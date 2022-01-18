@@ -14,6 +14,13 @@ class SettingScreen extends StatelessWidget {
         ),
         backgroundColor: MyTheme.kPrimaryColor,
       ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        alignment: Alignment.center,
+          child: Text(
+        'This screen is still under development, come back later!',
+        style: TextStyle(color: MyTheme.kPrimaryColor),
+      )),
     );
   }
 }

@@ -38,4 +38,13 @@ class Friends extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> sendRequestFriend(String userId) async {
+    try {
+      await Api.sendRequestFriend(await Util.getToken(), userId);
+      notifyListeners();
+    } catch (err) {
+      rethrow;
+    }
+  }
 }

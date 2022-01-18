@@ -55,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen>
             _authData['phonenumber']!,
             _authData['password']!,
             _authData['username']!);
-        Util.showErrorDialog('Sign up successfully.', context);
+        Util.showNotification('Sign up successfully.', context);
         setState(() {
           _authMode = AuthMode.login;
         });

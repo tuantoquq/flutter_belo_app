@@ -1,7 +1,9 @@
 import 'package:belo_app/models/user.dart';
 import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/provider/auth.dart';
+import 'package:belo_app/provider/friends.dart';
 import 'package:belo_app/screens/auth/auth_screen.dart';
+import 'package:belo_app/screens/profile/setting_screen.dart';
 import 'package:belo_app/utils/utils.dart';
 import 'package:belo_app/widgets/custom_button.dart';
 import 'package:belo_app/widgets/profile_attribute_card.dart';
@@ -34,6 +36,14 @@ class _PersonalPageScreenState extends State<PersonalPageScreen> {
     await Provider.of<Auth>(context, listen: false).logout();
     Util.showErrorDialog('You are logged out!', context);
     Navigator.of(context).popAndPushNamed(AuthScreen.routeName);
+  }
+
+  Future<void> _sendRequest() async {
+    await Provider.of<Friends>(context, listen: false)
+        .sendRequestFriend(widget.friendCard.id);
+    setState(() {
+      widget.isSendRequest = true;
+    });
   }
 
   @override
@@ -90,7 +100,7 @@ class _PersonalPageScreenState extends State<PersonalPageScreen> {
                                                       'Add friend',
                                                       Colors.white,
                                                       MyTheme.kPrimaryColor,
-                                                      () {}),
+                                                      _sendRequest),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -98,9 +108,13 @@ class _PersonalPageScreenState extends State<PersonalPageScreen> {
                                       ? CustomButton(
                                           'Go to Setting',
                                           Colors.white,
-                                          MyTheme.kPrimaryColor,
-                                          () {})
-                                      : CustomButton('Report', Colors.white,
+                                          MyTheme.kPrimaryColor, () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SettingScreen()));
+                                        })
+                                      : CustomButton('Block', Colors.white,
                                           MyTheme.kPrimaryColor, () {}),
                                   const Padding(
                                     padding: EdgeInsets.all(10),
