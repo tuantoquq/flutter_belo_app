@@ -1,0 +1,97 @@
+import 'package:belo_app/models/user.dart';
+import 'package:belo_app/provider/api.dart';
+import 'package:belo_app/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+// ignore: must_be_immutable
+class ReceivedCard extends StatelessWidget {
+  UserProfile friendCard;
+  ReceivedCard({Key? key, required this.friendCard}) : super(key: key);
+  Future<void> _setAcceptFriend() async {
+    await Api.setAcceptOrRejectFriend(await Util.getToken(),friendCard.id, true);
+  }
+  Future<void> _setRejectFriend() async {
+    await Api.setAcceptOrRejectFriend(await Util.getToken(), friendCard.id, false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      child: ListTile(
+        leading: CircleAvatar(
+          radius: 23,
+          child: SvgPicture.asset(
+            'assets/icons/user_avt.svg',
+            color: Colors.white,
+            height: 30,
+            width: 30,
+          ),
+          backgroundColor: Colors.blueGrey[200],
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                friendCard.username,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            Row(
+              children: [
+                CustomFriendButton('Accept', _setAcceptFriend, Colors.blue, Colors.white),
+                const SizedBox(
+                  width: 10,
+                ),
+                CustomFriendButton(
+                    'Cancel', _setRejectFriend, const Color(0xffFFEDEB), Colors.black),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomFriendButton extends StatelessWidget {
+  final VoidCallback action;
+  final String text;
+  final Color backgroundColor;
+  final Color textColor;
+  const CustomFriendButton(
+    this.text,
+    this.action,
+    this.backgroundColor,
+    this.textColor, {
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            primary: backgroundColor,
+          ),
+          onPressed: action,
+          child: Container(
+              width: 60,
+              height: 30,
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                text,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: textColor),
+              ))),
+    );
+  }
+}

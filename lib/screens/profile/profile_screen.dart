@@ -1,8 +1,10 @@
-import 'package:belo_app/models/models.dart';
+import 'package:belo_app/models/user.dart';
+import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/provider/api.dart';
 import 'package:belo_app/provider/auth.dart';
 import 'package:belo_app/screens/auth/auth_screen.dart';
 import 'package:belo_app/screens/profile/personal_page_screen.dart';
+import 'package:belo_app/screens/profile/setting_screen.dart';
 import 'package:belo_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,25 +21,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _getUserInfo() async {
     final response = await Api.getUserInfo(await Util.getToken());
-    _userInfo = UserDetailProfile(
+    _userInfo = UserProfile(
         username: response['data']['username'],
-        phonenumber: response['data']['phonenumber'],
+        id: response['data']['_id'],
         avtURL: '');
   }
 
   Future<void> _logout() async {
     await Provider.of<Auth>(context, listen: false).logout();
+    Util.showErrorDialog('You are logged out!', context);
     Navigator.of(context).popAndPushNamed(AuthScreen.routeName);
   }
 
   Future<void> _myAccountInfo() async {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) => PersonalPageScreen(userProfile: _userInfo,)
-    ));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PersonalPageScreen(
+                  friendCard: _userInfo,
+                  isMe: true,
+                )));
   }
 
-  Future<void> _settingInfo() async {}
-  Future<void> _helpCenterInfo() async {}
+  void _settingInfo() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SettingScreen()));
+  }
+
+  void _aboutUsHandle() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            child: Container(
+              height: 300,
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Text(
+                    'About us',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: MyTheme.kPrimaryColor),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Divider(
+                      thickness: 1,
+                    ),
+                  ),
+                  
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 25),
                     const CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+                      backgroundImage: AssetImage('assets/images/cat.jpg'),
                       radius: 50,
                     ),
                     const SizedBox(height: 5),
@@ -77,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 15),
                     CustomButton(Icons.settings, 'Setting', _settingInfo),
                     const SizedBox(height: 15),
-                    CustomButton(Icons.help, 'Help Center', _helpCenterInfo),
+                    CustomButton(Icons.help, 'About us', _aboutUsHandle),
                     const SizedBox(height: 15),
                     CustomButton(Icons.logout, 'Log Out', _logout),
                     const SizedBox(height: 25),

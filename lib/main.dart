@@ -1,18 +1,33 @@
+import 'dart:async';
+
 import 'package:belo_app/home.dart';
+import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/provider/auth.dart';
+import 'package:belo_app/provider/chats.dart';
+import 'package:belo_app/provider/friends.dart';
 import 'package:belo_app/screens/auth/auth_screen.dart';
 import 'package:belo_app/screens/auth/welcome_screen.dart';
-import 'package:belo_app/screens/profile/personal_page_screen.dart';
-
+import 'package:belo_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
@@ -20,24 +35,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => Auth()),
+        ChangeNotifierProvider(create: (ctx) => Chats()),
+        ChangeNotifierProvider(create: (ctx) => Friends()),
       ],
       child: MaterialApp(
         title: 'Belo Social',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-              .copyWith(secondary: Colors.green),
-          textTheme: const TextTheme(
-            bodyText1: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-            headline6: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 26,
-            ),
-          ),
-          scaffoldBackgroundColor: Colors.grey[100],
+          primaryColor: MyTheme.kPrimaryColor,
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
         ),
         home: const WelcomeScreen(),
         routes: {
@@ -49,4 +54,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

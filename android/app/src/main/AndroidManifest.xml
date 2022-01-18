@@ -3,6 +3,7 @@
    <application
         android:label="belo_app"
         android:icon="@mipmap/ic_launcher"
+        android:name="io.flutter.app.FlutterApplication"
         >
         <activity
             android:name=".MainActivity"

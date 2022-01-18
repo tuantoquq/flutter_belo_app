@@ -1,4 +1,5 @@
 import 'package:belo_app/home.dart';
+import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/provider/auth.dart';
 import 'package:belo_app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,7 @@ class _AuthScreenState extends State<AuthScreen>
                 CustomButton(
                   _authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP',
                   Colors.white,
-                  Theme.of(context).colorScheme.primary,
+                  MyTheme.kPrimaryColor,
                   _submit,
                   btnWidth: 180,
                 ),

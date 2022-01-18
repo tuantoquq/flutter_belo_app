@@ -1,3 +1,4 @@
+import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Text(
                     'Welcome to',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -53,7 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   CustomButton(
                     'GET STARTED',
                     Colors.white,
-                    Theme.of(context).colorScheme.primary,
+                    MyTheme.kPrimaryColor,
                     () {
                       Navigator.of(context)
                           .popAndPushNamed(AuthScreen.routeName);

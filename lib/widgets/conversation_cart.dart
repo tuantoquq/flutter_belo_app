@@ -1,11 +1,11 @@
-import 'package:belo_app/models/chat_model.dart';
+import 'package:belo_app/models/chat.dart';
 import 'package:belo_app/screens/chat/detail_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomCard extends StatelessWidget {
+class ConversationCard extends StatelessWidget {
   final ChatCardModel chatCardModel;
-  CustomCard(
+  ConversationCard(
       {Key? key,
       required this.chatCardModel})
       : super(key: key);
@@ -19,18 +19,12 @@ class CustomCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              child: SvgPicture.asset(
-                'assets/icons/user_avt.svg',
-                color: Colors.white,
-                height: 36,
-                width: 36,
-              ),
-              backgroundColor: Colors.grey,
+            leading: const CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage('assets/images/cat.jpg'),
             ),
             title: Text(
-              chatCardModel.username,
+              chatCardModel.partnerName,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(

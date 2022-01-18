@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class Auth with ChangeNotifier {
   String? _token;
 
@@ -28,17 +29,14 @@ class Auth with ChangeNotifier {
       // _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode({
-        'token': _token
-      });
+      final userData = json.encode({'token': _token});
       prefs.setString('userData', userData);
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<void> signUp(
-      String phonenumber, password, username) async {
+  Future<void> signUp(String phonenumber, password, username) async {
     Api.signUp(phonenumber, password, username);
   }
 

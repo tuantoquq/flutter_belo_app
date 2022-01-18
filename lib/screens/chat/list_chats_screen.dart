@@ -1,6 +1,10 @@
-import 'package:belo_app/models/chat_model.dart';
-import 'package:belo_app/widgets/custom_cart.dart';
+import 'package:belo_app/models/chat.dart';
+import 'package:belo_app/my_theme.dart';
+import 'package:belo_app/provider/chats.dart';
+import 'package:belo_app/utils/utils.dart';
+import 'package:belo_app/widgets/conversation_cart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListChatScreen extends StatefulWidget {
   const ListChatScreen({Key? key}) : super(key: key);
@@ -10,28 +14,54 @@ class ListChatScreen extends StatefulWidget {
 }
 
 class _ListChatScreenState extends State<ListChatScreen> {
-  List<ChatCardModel> listChats = [
-    ChatCardModel(
-        username: "Tuan Nguyen",
-        lastMessage: "Hi tomorrow",
-        lastSendTime: "10:30"),
-    ChatCardModel(
-        username: "Bich",
-        lastMessage: "Goodnight for my honey!",
-        lastSendTime: "12:35"),
-    ChatCardModel(
-        username: "Manh Dung",
-        lastMessage: "Hello my brother!",
-        lastSendTime: "21:23")
-  ];
+  late dynamic _fetch;
+  Future<void> _fetchListChats() {
+    return Provider.of<Chats>(context, listen: false).getListChats();
+  }
+
+  @override
+  void initState() {
+    _fetch = _fetchListChats();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('List Chats')),
-        body: ListView.builder(
-          itemCount: listChats.length,
-          itemBuilder: (context, index) => CustomCard(chatCardModel: listChats[index]),
-        ));
+    return FutureBuilder(
+        future: _fetch,
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: _fetchListChats,
+                    child: Scaffold(
+                        body: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Recent Chats',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 20),
+                          ),
+                        ),
+                        Expanded(
+                          child: Consumer<Chats>(builder: (ctx, chatData, _) {
+                            return ListView.builder(
+                              itemCount: chatData.listChats.length,
+                              itemBuilder: (context, index) => ConversationCard(
+                                  chatCardModel: chatData.listChats[index]),
+                            );
+                          }),
+                        ),
+                      ],
+                    )),
+                  ));
   }
 }

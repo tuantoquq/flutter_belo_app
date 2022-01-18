@@ -1,7 +1,9 @@
+import 'package:belo_app/my_theme.dart';
 import 'package:belo_app/screens/chat/list_chats_screen.dart';
 import 'package:belo_app/screens/dashboard/news_feed_screen.dart';
 import 'package:belo_app/screens/friend/friend_screen.dart';
 import 'package:belo_app/screens/profile/profile_screen.dart';
+import 'package:belo_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -26,6 +28,20 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyTheme.kPrimaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {},
+        ),
+        title: const TextField(
+          autofocus: false,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Search friends ...',
+              hintStyle: TextStyle(color: Colors.white)),
+        ),
+      ),
       body: PageStorage(
         child: currentScreen,
         bucket: pageStorageBucket,
@@ -43,14 +59,14 @@ class _HomeState extends State<Home> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = ListChatScreen();
+                    currentScreen = const ListChatScreen();
                     currentTab = 0;
                   });
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.chat_outlined,
+                    Icon(Icons.chat,
                         color: currentTab == 0 ? Colors.blue : Colors.grey),
                     Text(
                       'Chat',
@@ -64,14 +80,14 @@ class _HomeState extends State<Home> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = FriendScreen();
+                    currentScreen = const FriendScreen();
                     currentTab = 1;
                   });
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.contact_page_outlined,
+                    Icon(Icons.contact_page,
                         color: currentTab == 1 ? Colors.blue : Colors.grey),
                     Text(
                       'Friend',
@@ -85,14 +101,14 @@ class _HomeState extends State<Home> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = NewsFeedScreen();
+                    currentScreen = const NewsFeedScreen();
                     currentTab = 2;
                   });
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.home_outlined,
+                    Icon(Icons.home,
                         color: currentTab == 2 ? Colors.blue : Colors.grey),
                     Text(
                       'News Feed',
@@ -106,14 +122,14 @@ class _HomeState extends State<Home> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = ProfileScreen();
+                    currentScreen = const ProfileScreen();
                     currentTab = 3;
                   });
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.account_circle_outlined,
+                    Icon(Icons.account_circle,
                         color: currentTab == 3 ? Colors.blue : Colors.grey),
                     Text(
                       'Profile',
